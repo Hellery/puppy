@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: dcjet
+    url: jdbc:mysql://192.168.12.99/sell?characterEncoding=utf-8&useSSL=false
+server:
+  context-path: /api
