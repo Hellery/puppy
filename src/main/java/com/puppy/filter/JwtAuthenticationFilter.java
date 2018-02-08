@@ -1,5 +1,8 @@
 package com.puppy.filter;
 
+import com.puppy.enums.ResultEnum;
+import com.puppy.exception.PuppyException;
+import com.puppy.utils.IpUtil;
 import com.puppy.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +45,7 @@ public class JwtAuthenticationFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        patterns.add("auth/login");
+        patterns.add("identify/login");
         patterns.add("userpage");
     }
 
@@ -62,14 +65,14 @@ public class JwtAuthenticationFilter implements Filter {
         else {
             log.info("验证token....");
             String token = request.getHeader("Authorization");
-            if (utils.validateToken(token)){
-                // token有效
+            if (utils.validateToken(token, IpUtil.getIpAddr(request))){
+                // token有效 继续请求
                 filterChain.doFilter(request, response);
             }
             else {
                 // token 准备跳转失败
-                request.getRequestDispatcher("/403").forward(request, response);
-                filterChain.doFilter(request, response);
+                request.setAttribute("PUPPY_TOKEN",ResultEnum.TOKEN_INVALID);
+                request.getRequestDispatcher("/error").forward(request, response);
             }
         }
     }
