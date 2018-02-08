@@ -10,6 +10,7 @@ public enum ResultEnum {
     PARAM_ERROR(101,"请求参数不正确"),
     USER_NOT_EXIST(102,"用户不存在"),
     PASSWORD_ERROR(103,"密码不正确"),
+    METHOD_ERROR(103,"请求Method不支持"),
     IDENTIFY_ERROT(403,"无权访问"),
     NO_FOUND(404,"请求资源不存在"),
     INNER_ERROR(500,"服务器内部错误"),

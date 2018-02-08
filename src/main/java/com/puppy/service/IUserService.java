@@ -1,12 +1,16 @@
 package com.puppy.service;
 
-import com.puppy.domain.User;
+import com.puppy.dto.JwtDTO;
+import com.puppy.dto.LoginDTO;
+import com.puppy.dto.RegisterDTO;
+import com.puppy.enums.ResultEnum;
 
 public interface IUserService {
 
-    String login(String username,String password);
+    ResultEnum login(LoginDTO loginDTO,JwtDTO jwtDTO);
 
-    String register(User user);
+    ResultEnum register(RegisterDTO registerDTO);
+
 }
 
 

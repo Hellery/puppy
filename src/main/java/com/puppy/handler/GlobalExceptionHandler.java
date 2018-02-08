@@ -6,6 +6,7 @@ import com.puppy.utils.ResultUtil;
 import com.puppy.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,6 +31,9 @@ public class GlobalExceptionHandler {
         }
         else if (e instanceof BindException){
             return ResultUtil.error(ResultEnum.PARAM_ERROR);
+        }
+        else if (e instanceof HttpRequestMethodNotSupportedException){
+            return ResultUtil.error(ResultEnum.METHOD_ERROR);
         }
         else {
             log.info("[系统异常] {}",e);

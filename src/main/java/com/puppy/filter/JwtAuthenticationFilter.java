@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         patterns.add("identify/login");
-        patterns.add("userpage");
+        patterns.add("identify/register");
     }
 
     @Override
@@ -64,7 +64,7 @@ public class JwtAuthenticationFilter implements Filter {
         }
         else {
             log.info("验证token....");
-            String token = request.getHeader("Authorization");
+            String token = request.getHeader(utils.getAuthorizationHeaderKey());
             if (utils.validateToken(token, IpUtil.getIpAddr(request))){
                 // token有效 继续请求
                 filterChain.doFilter(request, response);

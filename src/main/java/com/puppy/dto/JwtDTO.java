@@ -15,6 +15,11 @@ public class JwtDTO {
      * */
     private String sit;
 
+    /**
+     * 用户角色
+     * */
+    private String pat;
+
     public JwtDTO() {
     }
 

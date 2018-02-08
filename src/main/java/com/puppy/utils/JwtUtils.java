@@ -16,6 +16,7 @@ import java.util.Map;
 public class JwtUtils {
 
     private final String HEADER_PREFIX  = "Bearer ";
+    private final String HEADER_KEY  = "Authorization";
     private final String JWT_SECRET = "ToS9IQ4IV9w1QZtAeVnJaQ==";
     private final long JWT_TTL = 1000 * 60 * 60 * 12L;  //12小时
 
@@ -24,6 +25,13 @@ public class JwtUtils {
      * */
     public String getAuthorizationHeaderPrefix(){
         return HEADER_PREFIX ;
+    }
+
+    /**
+     *  获取头部验证属性名
+     * */
+    public String getAuthorizationHeaderKey(){
+        return HEADER_KEY ;
     }
 
     public String removePrefix(String token){

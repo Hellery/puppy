@@ -1,39 +1,54 @@
 package com.puppy.service.impl;
 
 import com.puppy.domain.User;
+import com.puppy.dto.JwtDTO;
+import com.puppy.dto.LoginDTO;
+import com.puppy.dto.RegisterDTO;
+import com.puppy.enums.ResultEnum;
+import com.puppy.repository.IRoleRepository;
 import com.puppy.repository.IUserRepository;
 import com.puppy.service.IUserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService {
 
     @Autowired
-    private IUserRepository repository;
+    private IUserRepository userRepository;
+
+    @Autowired
+    private IRoleRepository roleRepository;
 
     @Override
-    public String login(String username, String password) {
-        Optional<User> user = repository.findByName(username);
+    public ResultEnum login(LoginDTO loginDTO,JwtDTO jwtDTO) {
+        Optional<User> user = userRepository.findByName(loginDTO.getUsername());
         if (!user.isPresent())
         {
-            return "用户名不存在！";
+            return ResultEnum.USER_NOT_EXIST;
         }
-        if(!password.equals(user.get().getPassword()))
+        if(!loginDTO.getPassword().equals(user.get().getPassword()))
         {
-            return  "密码不正确！";
+            return ResultEnum.PASSWORD_ERROR;
         }
-        return "登录成功！";
+        jwtDTO.setPat(user.get().getRoles().stream().map(x -> x.getName()).collect(Collectors.joining(",")));
+        return ResultEnum.SUCCESS;
     }
 
     @Override
-    public String register(User user) {
-        User result = repository.save(user);
+    public ResultEnum register(RegisterDTO registerDTO) {
+        User user = new User();
+        BeanUtils.copyProperties(registerDTO,user);
+        user.setName(registerDTO.getUsername());
+        user.setRoles(roleRepository.findAll());
+        User result = userRepository.save(user);
         if (result.getId()>0){
-            return "注册成功！ "+ result.toString();
+            return ResultEnum.SUCCESS;
         }
-        return "注册失败！";
+        return ResultEnum.UNKONW_ERROR;
     }
 }
