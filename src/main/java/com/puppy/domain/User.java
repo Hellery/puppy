@@ -6,10 +6,11 @@ import java.util.List;
 
 @Data
 @Entity
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"NAME"})})
 public class User {
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
     private String name;
     private String password;
     private String ip;
